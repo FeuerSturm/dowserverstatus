@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.0
+// Days of War Live Gameserver Status Banner v1.1
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -55,21 +55,29 @@ $countryflag_set = "";
 // Show simplified map name (i.e. simply "Thunder" instead of "dow_thunder_dayrain")
 // true = show simplified map name | false = show default map name
 $simplify_mapname = true;
-// Show the query port besides the connection port?
-// false = no query port | true = show query port
-$show_queryport = false;
+// Show the query port instead of the connection port?
+// false = show connection port | true = show query port
+$show_queryport = true;
 // Cache time in seconds to save some resources:
 // Minimum is 10 seconds, maximum is 300 seconds!
 $cache_time = 60;
 // Filter IP addresses?
 // false = don't filter IPs | true = only allow specified IPs
-$ips_filter = false;
+$ips_filter = true;
 // Array of allowed IPs if $ips_filter is set to true:
 $ips_allowed = array("31.186.250.10", "199.60.101.90");
 //
 // LANGUAGE SETTINGS
 // =================
 //
+// Translation for "Server"
+$desc_server = "Server";
+// Translation for "IP/Port"
+$desc_ipport = "IP/Port";
+// Translation for "Map"
+$desc_map = "Map";
+// Translation for "Players"
+$desc_players = "Players";
 // Error message to display when IP and/or port
 // is not specified:
 $error_ipport = "IP and/or port missing!";
@@ -115,6 +123,18 @@ $error_offline = "Gameserver OFFLINE!";
 		readfile($cachefile);
 	}
 	
+	function AddDesc($background, $resdir, $font_ttf, $font_size, $coord_x, $coord_y, $desc_text)
+	{
+		$font = $resdir . $font_ttf;
+		$dims = imagettfbbox($font_size, 0, $font, $desc_text);
+		$textWidth = abs($dims[4] - $dims[0]);
+		$coord_x = $coord_x - $textWidth;
+		$whitetext = imagecolorallocate($background,255,255,255);
+		$blacktext = imagecolorallocate($background,0,0,0);
+		imagettftext($background, $font_size, 0, $coord_x+1, $coord_y+1, $blacktext, $font, $desc_text);
+		imagettftext($background, $font_size, 0, $coord_x, $coord_y, $whitetext, $font, $desc_text);
+	}
+	
 	if(!empty($bind_gameserver))
 	{
 		$server = explode(":", $bind_gameserver);
@@ -146,14 +166,12 @@ $error_offline = "Gameserver OFFLINE!";
 	}
 	if(empty($ip) OR empty($port_str))
 	{
-		$errormsg = $error_ipport;
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipport, $error_fontsize);
 		exit;
 	}
 	if($ips_filter AND !in_array($ip, $ips_allowed))
 	{
-		$errormsg = $error_ipfilter;
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipfilter, $error_fontsize);
 		exit;
 	}
 	$font = $resdir . $font_ttf;
@@ -173,8 +191,7 @@ $error_offline = "Gameserver OFFLINE!";
 	}
 	catch(Exception $e)
 	{
-		$errormsg = $error_offline;
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_offline, $error_fontsize);
 		exit;
 	}
 	finally
@@ -184,8 +201,7 @@ $error_offline = "Gameserver OFFLINE!";
 	
 	if($data['GameID'] != '454350')
 	{
-		$errormsg = $error_unsupported;
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_unsupported, $error_fontsize);
 		exit;
 	}
 
@@ -224,6 +240,11 @@ $error_offline = "Gameserver OFFLINE!";
 		imagedestroy($lockedpng);
 	}
 	
+	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 30, $desc_server . ":");
+	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 47, $desc_ipport . ":");
+	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 64, $desc_map . ":");
+	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 81, $desc_players . ":");
+	
 	if(strlen($rules['ONM_s']) > 35)
 	{
 		$hostname = substr($rules['ONM_s'], 0, 35) . "...";
@@ -232,7 +253,7 @@ $error_offline = "Gameserver OFFLINE!";
 	{
 		$hostname = $rules['ONM_s'];
 	}
-	$ipinfo = $show_queryport ? $ip . ":" . $rules['P2PPORT'] . " (Query: " . $port_str . ")" : $ip . ":" . $rules['P2PPORT'];
+	$ipinfo = $show_queryport ? $ip . ":" . $port_str : $ip . ":" . $rules['P2PPORT'];
 	if($simplify_mapname)
 	{
 		$mapname = explode("_", $map);
