@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.1
+// Days of War Live Gameserver Status Banner v1.15
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -63,7 +63,7 @@ $show_queryport = true;
 $cache_time = 60;
 // Filter IP addresses?
 // false = don't filter IPs | true = only allow specified IPs
-$ips_filter = true;
+$ips_filter = false;
 // Array of allowed IPs if $ips_filter is set to true:
 $ips_allowed = array("31.186.250.10", "199.60.101.90");
 //
@@ -95,6 +95,12 @@ $error_offline = "Gameserver OFFLINE!";
 //////////////////////////////////////////////////////////////////////////////////////////////////
 	require __DIR__ . '/SourceQuery/bootstrap.php';
 	use xPaw\SourceQuery\SourceQuery;
+	
+	$cachefolder = __DIR__ . '/cache';
+	if(!file_exists($cachefolder))
+	{
+		mkdir($cachefolder, 0755, true);
+	}
 
 	function StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize)
 	{
