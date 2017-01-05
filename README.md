@@ -30,10 +30,10 @@ Here's some stuff that you can edit:
 * change font used and font size for data/error messages
 * enable/disable GeoIP features to display country flag according to gameserver's location, can be set manually as well
 * choose between simplified and normal map names, i.e. simply "Thunder" instead of "dow_thunder_dayrain"
-* show/hide query port in the status banner
+* show either game or query port in the status banner
 * adjust cache time (default 60seconds, min 10sec, max 300sec)
 * enable/disable gameserver IP filter to prevent others from using your hosting to display their gameservers
-* change the texts for error messages, so you can translate them to your language
+* change the texts for error messages and descriptions, so you can translate them to your language
 
 I've added a lot of comments to the settings, so I hope it's easy to understand what to change, if not, just ask!
 
