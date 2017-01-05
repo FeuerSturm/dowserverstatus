@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.15
+// Days of War Live Gameserver Status Banner v1.2
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -129,14 +129,11 @@ $error_offline = "Gameserver OFFLINE!";
 		readfile($cachefile);
 	}
 	
-	function AddDesc($background, $resdir, $font_ttf, $font_size, $coord_x, $coord_y, $desc_text)
+	function AddDesc($background, $font, $font_size, $coord_x, $coord_y, $desc_text, $whitetext, $blacktext)
 	{
-		$font = $resdir . $font_ttf;
 		$dims = imagettfbbox($font_size, 0, $font, $desc_text);
 		$textWidth = abs($dims[4] - $dims[0]);
 		$coord_x = $coord_x - $textWidth;
-		$whitetext = imagecolorallocate($background,255,255,255);
-		$blacktext = imagecolorallocate($background,0,0,0);
 		imagettftext($background, $font_size, 0, $coord_x+1, $coord_y+1, $blacktext, $font, $desc_text);
 		imagettftext($background, $font_size, 0, $coord_x, $coord_y, $whitetext, $font, $desc_text);
 	}
@@ -246,10 +243,13 @@ $error_offline = "Gameserver OFFLINE!";
 		imagedestroy($lockedpng);
 	}
 	
-	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 30, $desc_server . ":");
-	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 47, $desc_ipport . ":");
-	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 64, $desc_map . ":");
-	AddDesc($background, $resdir, $font_ttf, $font_size, 162, 81, $desc_players . ":");
+	$whitetext = imagecolorallocate($background,255,255,255);
+	$blacktext = imagecolorallocate($background,0,0,0);
+	
+	AddDesc($background, $font, $font_size, 162, 30, $desc_server . ":", $whitetext, $blacktext);
+	AddDesc($background, $font, $font_size, 162, 47, $desc_ipport . ":", $whitetext, $blacktext);
+	AddDesc($background, $font, $font_size, 162, 64, $desc_map . ":", $whitetext, $blacktext);
+	AddDesc($background, $font, $font_size, 162, 81, $desc_players . ":", $whitetext, $blacktext);
 	
 	if(strlen($rules['ONM_s']) > 35)
 	{
@@ -268,7 +268,6 @@ $error_offline = "Gameserver OFFLINE!";
 	$mapinfo = $map . " (" . $rules['G_s'] . ")";
 	$playerinfo = $rules['N_i'] . " / " . $rules['P_i'];
 
-	$whitetext = imagecolorallocate($background,255,255,255);
 	if($countryflag_show)
 	{
 		$countrycode = "unknown";
