@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.2
+// Days of War Live Gameserver Status Banner v1.25
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -273,7 +273,7 @@ $error_offline = "Gameserver OFFLINE!";
 		$countrycode = "unknown";
 		if(empty($countryflag_set))
 		{
-			$query = @unserialize(file_get_contents('http://ip-api.com/php/'.$ip));
+			$query = @unserialize(file_get_contents('http://ip-api.com/php/' .$ip . '?fields=status,countryCode'));
 			if($query && $query['status'] == 'success')
 			{
 				$countrycode = $query['countryCode'];
