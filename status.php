@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.25
+// Days of War Live Gameserver Status Banner v1.30
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -123,7 +123,7 @@ $error_offline = "Gameserver OFFLINE!";
 		imagettftext($background, $error_fontsize, 0, 110, 60, $whitetext, $font, $errormsg);
 		imagepng($background, $cachefile, 1);
 		imagedestroy($background);
-		$contentdisp = 'Content-Disposition: inline; filename="server_error.png"';
+		$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
 		header('content-type: image/png');
 		header($contentdisp);
 		readfile($cachefile);
@@ -150,7 +150,7 @@ $error_offline = "Gameserver OFFLINE!";
 		$port_str = $_GET['port'];
 	}
 	$resdir = __DIR__ . "/resources/";
-	$cachefile = __DIR__ . "/cache/" . basename(__FILE__, '.php') . "-" . $ip . "-" . $port_str . ".png";
+	$cachefile = $cachefolder . "/" . basename(__FILE__, '.php') . "-" . $ip . "-" . $port_str . ".png";
 	if($cache_time < 10)
 	{
 		$cache_time = 10;
@@ -161,7 +161,7 @@ $error_offline = "Gameserver OFFLINE!";
 	}
 	if(file_exists($cachefile) AND (time() - filemtime($cachefile) <= $cache_time))
 	{
-		$contentdisp = 'Content-Disposition: inline; filename="server_status.png"';
+		$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
 		header('content-type: image/png');
 		header($contentdisp);
 		readfile($cachefile);
@@ -300,7 +300,7 @@ $error_offline = "Gameserver OFFLINE!";
 	
 	imagepng($background, $cachefile, 1);
 	imagedestroy($background);
-	$contentdisp = 'Content-Disposition: inline; filename="server_status.png"';
+	$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
 	header('content-type: image/png');
 	header($contentdisp);
 	readfile($cachefile);
