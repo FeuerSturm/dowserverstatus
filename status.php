@@ -1,6 +1,6 @@
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////
-// Days of War Live Gameserver Status Banner v1.30
+// Days of War Live Gameserver Status Banner
 //
 // created by Sturm [91te LLID] - https://91te.de
 //
@@ -55,6 +55,9 @@ $countryflag_set = "";
 // Show simplified map name (i.e. simply "Thunder" instead of "dow_thunder_dayrain")
 // true = show simplified map name | false = show default map name
 $simplify_mapname = true;
+// Show gamemode after map name (i.e. "Domination", "Detonation")
+// true = show gamemode | false = hide gamemode
+$show_gamemode = true;
 // Show the query port instead of the connection port?
 // false = show connection port | true = show query port
 $show_queryport = true;
@@ -265,7 +268,7 @@ $error_offline = "Gameserver OFFLINE!";
 		$mapname = explode("_", $map);
 		$map = ucfirst($mapname[1]);
 	}
-	$mapinfo = $map . " (" . $rules['G_s'] . ")";
+	$mapinfo = $show_gamemode ? $map . " (" . $rules['G_s'] . ")" : $map;
 	$playerinfo = $rules['N_i'] . " / " . $rules['P_i'];
 
 	if($countryflag_show)
