@@ -137,9 +137,12 @@ $error_offline = "Gameserver OFFLINE!";
 	
 	function AddShadowedText($background, $font, $font_size, $coord_x, $coord_y, $desc_text, $whitetext, $blacktext, $aligntext = false)
 	{
-		$dims = imagettfbbox($font_size, 0, $font, $desc_text);
-		$textWidth = abs($dims[4] - $dims[0]);
-		$coord_x = $aligntext ? $coord_x - $textWidth : $coord_x;
+		if($aligntext)
+		{
+			$dims = imagettfbbox($font_size, 0, $font, $desc_text);
+			$textWidth = abs($dims[4] - $dims[0]);
+			$coord_x = $coord_x - $textWidth;
+		}
 		imagettftext($background, $font_size, 0, $coord_x+1, $coord_y+1, $blacktext, $font, $desc_text);
 		imagettftext($background, $font_size, 0, $coord_x, $coord_y, $whitetext, $font, $desc_text);
 	}
