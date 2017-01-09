@@ -22,7 +22,7 @@ I think you get the idea!
 
 ###CUSTOMIZATION:
 If you're not happy with the default settings/look, you can customize the status banner to your likings,
-just edit the "**status.php**" with a text editor (I'd recommend [NotePad++](https://notepad-plus-plus.org/)) and you'll find all possible options!
+just edit the "**config.php**" in the "config" folder with a text editor (I'd recommend [NotePad++](https://notepad-plus-plus.org/)) and you'll find all possible options!
 
 Here's some stuff that you can edit:
 * ability to bind status banner to single gameserver so it's not needed to supply ip and port via URL
