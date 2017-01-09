@@ -42,6 +42,9 @@ $font_ttf = "SpecialElite.ttf";
 $font_size = 10;
 // Font size to use for error messages:
 $error_fontsize = 20;
+// Darken map image where server data is displayed?
+// true = darken background | false = keep map image like it is
+$darken_databg = true;
 // Show country flag corresponding to server's location?
 // false = don't show country flag | true = show country flag
 $countryflag_show = true;
