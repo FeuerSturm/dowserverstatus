@@ -132,11 +132,11 @@ $error_offline = "Gameserver OFFLINE!";
 		readfile($cachefile);
 	}
 	
-	function AddDesc($background, $font, $font_size, $coord_x, $coord_y, $desc_text, $whitetext, $blacktext)
+	function AddShadowedText($background, $font, $font_size, $coord_x, $coord_y, $desc_text, $whitetext, $blacktext, $aligntext = false)
 	{
 		$dims = imagettfbbox($font_size, 0, $font, $desc_text);
 		$textWidth = abs($dims[4] - $dims[0]);
-		$coord_x = $coord_x - $textWidth;
+		$coord_x = $aligntext ? $coord_x - $textWidth : $coord_x;
 		imagettftext($background, $font_size, 0, $coord_x+1, $coord_y+1, $blacktext, $font, $desc_text);
 		imagettftext($background, $font_size, 0, $coord_x, $coord_y, $whitetext, $font, $desc_text);
 	}
@@ -231,11 +231,14 @@ $error_offline = "Gameserver OFFLINE!";
 	imagecopy($background, $gamepng, 10, 10, 0, 0, 80, 80);
 	imagedestroy($gamepng);
 
-	$status = $resdir . "status.png";
-	$statuspng = imagecreatefrompng($status);
-	imagesavealpha($statuspng, true);
-	imagecopy($background, $statuspng, 2, 2, 0, 0, 464, 96);
-	imagedestroy($statuspng);
+	if($darken_databg)
+	{
+		$status = $resdir . "status.png";
+		$statuspng = imagecreatefrompng($status);
+		imagesavealpha($statuspng, true);
+		imagecopy($background, $statuspng, 2, 2, 0, 0, 464, 96);
+		imagedestroy($statuspng);
+	}
 	
 	if($data['Password'] == 1)
 	{
@@ -249,10 +252,10 @@ $error_offline = "Gameserver OFFLINE!";
 	$whitetext = imagecolorallocate($background,255,255,255);
 	$blacktext = imagecolorallocate($background,0,0,0);
 	
-	AddDesc($background, $font, $font_size, 162, 30, $desc_server . ":", $whitetext, $blacktext);
-	AddDesc($background, $font, $font_size, 162, 47, $desc_ipport . ":", $whitetext, $blacktext);
-	AddDesc($background, $font, $font_size, 162, 64, $desc_map . ":", $whitetext, $blacktext);
-	AddDesc($background, $font, $font_size, 162, 81, $desc_players . ":", $whitetext, $blacktext);
+	AddShadowedText($background, $font, $font_size, 162, 30, $desc_server . ":", $whitetext, $blacktext, true);
+	AddShadowedText($background, $font, $font_size, 162, 47, $desc_ipport . ":", $whitetext, $blacktext, true);
+	AddShadowedText($background, $font, $font_size, 162, 64, $desc_map . ":", $whitetext, $blacktext, true);
+	AddShadowedText($background, $font, $font_size, 162, 81, $desc_players . ":", $whitetext, $blacktext, true);
 	
 	if(strlen($rules['ONM_s']) > 35)
 	{
@@ -291,15 +294,15 @@ $error_offline = "Gameserver OFFLINE!";
 		imagesavealpha($flagpng, true);
 		imagecopy($background, $flagpng, 170, 20, 0, 0, 16, 11);
 		imagedestroy($flagpng);
-		imagettftext($background, $font_size , 0, 190, 30, $whitetext, $font, $hostname);	
+		AddShadowedText($background, $font, $font_size , 190, 30, $hostname, $whitetext, $blacktext);
 	}
 	else
 	{
-		imagettftext($background, $font_size , 0, 170, 30, $whitetext, $font, $hostname);
+		AddShadowedText($background, $font, $font_size , 170, 30, $hostname, $whitetext, $blacktext);
 	}
-	imagettftext($background, $font_size , 0, 170, 47, $whitetext, $font, $ipinfo);
-	imagettftext($background, $font_size , 0, 170, 64, $whitetext, $font, $mapinfo);
-	imagettftext($background, $font_size , 0, 170, 81, $whitetext, $font, $playerinfo);
+	AddShadowedText($background, $font, $font_size , 170, 47, $ipinfo, $whitetext, $blacktext);
+	AddShadowedText($background, $font, $font_size , 170, 64, $mapinfo, $whitetext, $blacktext);
+	AddShadowedText($background, $font, $font_size , 170, 81, $playerinfo, $whitetext, $blacktext);
 	
 	imagepng($background, $cachefile, 1);
 	imagedestroy($background);
