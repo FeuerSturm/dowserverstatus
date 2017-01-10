@@ -83,5 +83,27 @@ $error_unsupported = "Unsupported Game!";
 // Error message to diplay when the Days of War gameserver is offline or the query
 // in general failed:
 $error_offline = "Gameserver OFFLINE!";
+//
+// COLOR SETTINGS
+// ==============
+//
+// All colors have to be specified in RGB format,
+// that means the first value is the Red part of the final color,
+// second value is Green and third value is Blue.
+// If you want to use white, use value 255 for R,G and B!
+// For black use value 0 for R, G and B!
+//
+// Text color for descriptions
+$desc_textcolor = array(255, 255, 255);
+// Shadow color for descriptions
+$desc_shadowcolor = array(0, 0, 0);
+// Text color for data
+$data_textcolor = array(255, 255, 255);
+// Shadow color for data
+$data_shadowcolor = array(0, 0, 0);
+// Text color for error messages
+$error_textcolor = array(255, 255, 255);
+// Shadow color for error messages
+$error_shadowcolor = array(0, 0, 0);
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ?>

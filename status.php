@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Days of War Live Gameserver Status Banner
 //
-// created by Sturm [91te LLID] - https://91te.de
+// created by FeuerSturm - https://feuersturm.info
 //
 // Credits:
 // - based on PHP-Source-Query Library by xPaw - https://github.com/xPaw/
@@ -23,34 +23,36 @@
 		mkdir($cachefolder, 0755, true);
 	}
 
-	function StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize)
+	function StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $errormsg, $error_fontsize, $error_textcolor, $error_shadowcolor)
 	{
-		$backgroundimg = $resdir . "frame.png";
-		$background = imagecreatefrompng($backgroundimg);
-		imagesavealpha($background, true);
+		$baseimgfile = $resdir . "frame.png";
+		$baseimg = imagecreatefrompng($baseimgfile);
+		imagesavealpha($baseimg, true);
 		$errorpic = $resdir . $error_bg;
-		$errorpicpng = imagecreatefrompng($errorpic);
-		imagesavealpha($errorpicpng, true);
-		imagecopy($background, $errorpicpng, 2, 2, 0, 0, 464, 96);
-		imagedestroy($errorpicpng);
+		BuildImage($baseimg, $errorpic, 2, 2, 0, 0, 464, 96);
 		$errorimg = $resdir . $error_logo;
-		$errorpng = imagecreatefrompng($errorimg);
-		imagecopy($background, $errorpng, 10, 10, 0, 0, 80, 80);
-		imagedestroy($errorpng);
+		BuildImage($baseimg, $errorimg, 10, 10, 0, 0, 80, 80);
 		$font = $resdir . $font_ttf;
-		$whitetext = imagecolorallocate($background,255,255,255);
-		$blacktext = imagecolorallocate($background,0,0,0);
-		imagettftext($background, $error_fontsize, 0, 112, 62, $blacktext, $font, $errormsg);
-		imagettftext($background, $error_fontsize, 0, 110, 60, $whitetext, $font, $errormsg);
-		imagepng($background, $cachefile, 1);
-		imagedestroy($background);
+		$error_textcolor_alloc = imagecolorallocate($baseimg, $error_textcolor[0], $error_textcolor[1], $error_textcolor[2]);
+		$error_shadowcolor_alloc = imagecolorallocate($baseimg, $error_shadowcolor[0], $error_shadowcolor[1], $error_shadowcolor[2]);
+		AddShadowedText($baseimg, $font, $error_fontsize, 110, 60, $errormsg, $error_textcolor_alloc, $error_shadowcolor_alloc, false, 2);
+		imagepng($baseimg, $cachefile, 1);
+		imagedestroy($baseimg);
 		$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
 		header('content-type: image/png');
 		header($contentdisp);
 		readfile($cachefile);
 	}
 	
-	function AddShadowedText($background, $font, $font_size, $coord_x, $coord_y, $desc_text, $whitetext, $blacktext, $aligntext = false)
+	function BuildImage($baseimg, $imagefile, $coord_x, $coord_y, $src_x, $src_y, $imgwidth, $imgheight)
+	{
+		$image = imagecreatefrompng($imagefile);
+		imagesavealpha($image, true);
+		imagecopy($baseimg, $image, $coord_x, $coord_y, $src_x, $src_y, $imgwidth, $imgheight);
+		imagedestroy($image);
+	}
+	
+	function AddShadowedText($baseimg, $font, $font_size, $coord_x, $coord_y, $desc_text, $textcolor, $textshadow, $aligntext = false, $offset = 1)
 	{
 		if($aligntext)
 		{
@@ -58,8 +60,8 @@
 			$textWidth = abs($dims[4] - $dims[0]);
 			$coord_x = $coord_x - $textWidth;
 		}
-		imagettftext($background, $font_size, 0, $coord_x+1, $coord_y+1, $blacktext, $font, $desc_text);
-		imagettftext($background, $font_size, 0, $coord_x, $coord_y, $whitetext, $font, $desc_text);
+		imagettftext($baseimg, $font_size, 0, $coord_x+$offset, $coord_y+$offset, $textshadow, $font, $desc_text);
+		imagettftext($baseimg, $font_size, 0, $coord_x, $coord_y, $textcolor, $font, $desc_text);
 	}
 	
 	if(!empty($bind_gameserver))
@@ -93,12 +95,12 @@
 	}
 	if(empty($ip) OR empty($port_str))
 	{
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipport, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipport, $error_fontsize, $error_textcolor, $error_shadowcolor);
 		exit;
 	}
 	if($ips_filter AND !in_array($ip, $ips_allowed))
 	{
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipfilter, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_ipfilter, $error_fontsize, $error_textcolor, $error_shadowcolor);
 		exit;
 	}
 	$font = $resdir . $font_ttf;
@@ -118,7 +120,7 @@
 	}
 	catch(Exception $e)
 	{
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_offline, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_offline, $error_fontsize, $error_textcolor, $error_shadowcolor);
 		exit;
 	}
 	finally
@@ -128,13 +130,13 @@
 	
 	if($data['GameID'] != '454350')
 	{
-		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_unsupported, $error_fontsize);
+		StatusError($resdir, $error_logo, $error_bg, $font_ttf, $cachefile, $error_unsupported, $error_fontsize, $error_textcolor, $error_shadowcolor);
 		exit;
 	}
 
-	$backgroundimg = $resdir . "frame.png";
-	$background = imagecreatefrompng($backgroundimg);
-	imagesavealpha($background, true);
+	$baseimgfile = $resdir . "frame.png";
+	$baseimg = imagecreatefrompng($baseimgfile);
+	imagesavealpha($baseimg, true);
 	
 	$map = strtolower($rules['MPN_s']);
 	$mappic = $resdir . "mapimages/" . $map . ".png";
@@ -142,41 +144,30 @@
 	{
 		$mappic = $resdir . $default_bg;
 	}
-	$mappicpng = imagecreatefrompng($mappic);
-	imagesavealpha($mappicpng, true);
-	imagecopy($background, $mappicpng, 2, 2, 0, 0, 464, 96);
-	imagedestroy($mappicpng);
-	
+	BuildImage($baseimg, $mappic, 2, 2, 0, 0, 464, 96);
+		
 	$gameimg = $resdir . $game_logo;
-	$gamepng = imagecreatefrompng($gameimg);
-	imagecopy($background, $gamepng, 10, 10, 0, 0, 80, 80);
-	imagedestroy($gamepng);
+	BuildImage($baseimg, $gameimg, 10, 10, 0, 0, 80, 80);
 
 	if($darken_databg)
 	{
 		$status = $resdir . "status.png";
-		$statuspng = imagecreatefrompng($status);
-		imagesavealpha($statuspng, true);
-		imagecopy($background, $statuspng, 2, 2, 0, 0, 464, 96);
-		imagedestroy($statuspng);
+		BuildImage($baseimg, $status, 2, 2, 0, 0, 464, 96);
 	}
 	
 	if($data['Password'] == 1)
 	{
 		$locked = $resdir . "lock.png";
-		$lockedpng = imagecreatefrompng($locked);
-		imagesavealpha($lockedpng, true);
-		imagecopy($background, $lockedpng, 74, 70, 0, 0, 20, 24);
-		imagedestroy($lockedpng);
+		BuildImage($baseimg, $locked, 74, 70, 0, 0, 20, 24);
 	}
 	
-	$whitetext = imagecolorallocate($background,255,255,255);
-	$blacktext = imagecolorallocate($background,0,0,0);
+	$desc_textcolor_alloc = imagecolorallocate($baseimg,$desc_textcolor[0],$desc_textcolor[1],$desc_textcolor[2]);
+	$desc_shadowcolor_alloc = imagecolorallocate($baseimg,$desc_shadowcolor[0],$desc_shadowcolor[1],$desc_shadowcolor[2]);
 	
-	AddShadowedText($background, $font, $font_size, 162, 30, $desc_server . ":", $whitetext, $blacktext, true);
-	AddShadowedText($background, $font, $font_size, 162, 47, $desc_ipport . ":", $whitetext, $blacktext, true);
-	AddShadowedText($background, $font, $font_size, 162, 64, $desc_map . ":", $whitetext, $blacktext, true);
-	AddShadowedText($background, $font, $font_size, 162, 81, $desc_players . ":", $whitetext, $blacktext, true);
+	AddShadowedText($baseimg, $font, $font_size, 162, 30, $desc_server . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
+	AddShadowedText($baseimg, $font, $font_size, 162, 47, $desc_ipport . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
+	AddShadowedText($baseimg, $font, $font_size, 162, 64, $desc_map . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
+	AddShadowedText($baseimg, $font, $font_size, 162, 81, $desc_players . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
 	
 	if(strlen($rules['ONM_s']) > 35)
 	{
@@ -194,6 +185,9 @@
 	}
 	$mapinfo = $show_gamemode ? $map . " (" . $rules['G_s'] . ")" : $map;
 	$playerinfo = $rules['N_i'] . " / " . $rules['P_i'];
+	
+	$data_textcolor_alloc = imagecolorallocate($baseimg,$data_textcolor[0],$data_textcolor[1],$data_textcolor[2]);
+	$data_shadowcolor_alloc = imagecolorallocate($baseimg,$data_shadowcolor[0],$data_shadowcolor[1],$data_shadowcolor[2]);
 
 	if($countryflag_show)
 	{
@@ -211,22 +205,19 @@
 			$countrycode = $countryflag_set;
 		}
 		$flag = $resdir . "flags/" . strtolower($countrycode) . ".png";
-		$flagpng = imagecreatefrompng($flag);
-		imagesavealpha($flagpng, true);
-		imagecopy($background, $flagpng, 170, 20, 0, 0, 16, 11);
-		imagedestroy($flagpng);
-		AddShadowedText($background, $font, $font_size , 190, 30, $hostname, $whitetext, $blacktext);
+		BuildImage($baseimg, $flag, 170, 20, 0, 0, 16, 11);
+		AddShadowedText($baseimg, $font, $font_size , 190, 30, $hostname, $data_textcolor_alloc, $data_shadowcolor_alloc);
 	}
 	else
 	{
-		AddShadowedText($background, $font, $font_size , 170, 30, $hostname, $whitetext, $blacktext);
+		AddShadowedText($baseimg, $font, $font_size , 170, 30, $hostname, $data_textcolor_alloc, $data_shadowcolor_alloc);
 	}
-	AddShadowedText($background, $font, $font_size , 170, 47, $ipinfo, $whitetext, $blacktext);
-	AddShadowedText($background, $font, $font_size , 170, 64, $mapinfo, $whitetext, $blacktext);
-	AddShadowedText($background, $font, $font_size , 170, 81, $playerinfo, $whitetext, $blacktext);
+	AddShadowedText($baseimg, $font, $font_size , 170, 47, $ipinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
+	AddShadowedText($baseimg, $font, $font_size , 170, 64, $mapinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
+	AddShadowedText($baseimg, $font, $font_size , 170, 81, $playerinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
 	
-	imagepng($background, $cachefile, 1);
-	imagedestroy($background);
+	imagepng($baseimg, $cachefile, 1);
+	imagedestroy($baseimg);
 	$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
 	header('content-type: image/png');
 	header($contentdisp);
