@@ -16,7 +16,7 @@ a live status banner for, the format is as follows:
 
 Example:
 
-    https://feuersturm.info/serverstatus/status.php?ip=31.186.250.10&port=27015
+    https://yourdomain.com/serverstatus/status.php?ip=31.186.250.10&port=27015
 
 I think you get the idea!
 
@@ -31,6 +31,8 @@ Here's some stuff that you can edit:
 * enable/disable GeoIP features to display country flag according to gameserver's location, can be set manually as well
 * choose between simplified and normal map names, i.e. simply "Thunder" instead of "dow_thunder_dayrain"
 * show either game or query port in the status banner
+* change font & shadow colors for all different texts
+* set max length of server name before cropping it
 * adjust cache time (default 60seconds, min 10sec, max 300sec)
 * enable/disable gameserver IP filter to prevent others from using your hosting to display their gameservers
 * change the texts for error messages and descriptions, so you can translate them to your language
