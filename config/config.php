@@ -51,6 +51,8 @@ $show_gamemode = true;
 // Show the query port instead of the connection port?
 // false = show connection port | true = show query port
 $show_queryport = true;
+// Max length of server name before cropping it and adding "..." to the name
+$servername_maxchars = 35;
 // Cache time in seconds to save some resources:
 // Minimum is 10 seconds, maximum is 300 seconds!
 $cache_time = 60;

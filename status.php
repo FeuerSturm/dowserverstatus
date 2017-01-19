@@ -169,9 +169,9 @@
 	AddShadowedText($baseimg, $font, $font_size, 162, 64, $desc_map . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
 	AddShadowedText($baseimg, $font, $font_size, 162, 81, $desc_players . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
 	
-	if(strlen($rules['ONM_s']) > 35)
+	if(strlen($rules['ONM_s']) > $servername_maxchars)
 	{
-		$hostname = substr($rules['ONM_s'], 0, 35) . "...";
+		$hostname = substr($rules['ONM_s'], 0, $servername_maxchars) . "...";
 	}
 	else
 	{
