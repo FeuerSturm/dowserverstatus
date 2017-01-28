@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Days of War Live Gameserver Status Banner
 //
-// created by FeuerSturm - https://feuersturm.info
+// created by FeuerSturm - https://dowserverstatus.net
 //
 // Credits:
 // - based on PHP-Source-Query Library by xPaw - https://github.com/xPaw/
@@ -169,13 +169,14 @@
 	AddShadowedText($baseimg, $font, $font_size, 162, 64, $desc_map . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
 	AddShadowedText($baseimg, $font, $font_size, 162, 81, $desc_players . ":", $desc_textcolor_alloc, $desc_shadowcolor_alloc, true);
 	
-	if(strlen($rules['ONM_s']) > $servername_maxchars)
+	$trimmedname = trim($rules['ONM_s']);
+	if(strlen($trimmedname) > $servername_maxchars)
 	{
-		$hostname = substr($rules['ONM_s'], 0, $servername_maxchars) . "...";
+		$hostname = substr($trimmedname, 0, $servername_maxchars) . "...";
 	}
 	else
 	{
-		$hostname = $rules['ONM_s'];
+		$hostname = $trimmedname;
 	}
 	$ipinfo = $show_queryport ? $ip . ":" . $port_str : $ip . ":" . $rules['P2PPORT'];
 	if($simplify_mapname)
