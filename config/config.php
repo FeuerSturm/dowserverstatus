@@ -16,12 +16,19 @@ $game_logo = "default_logo.png";
 // Default background image for unknown maps
 // (has to be 464x96px PNG in "resources" folder!):
 $default_bg = "default_bg.png";
+// Always use default background image instead of preview picture of the
+// currently running map?
+// false = use map pictures | true = always use default background image
+$default_bg_only = false;
 // Logo to use for errors
 // (has to be 80x80px PNG in "resources" folder!):
 $error_logo = "error_logo.png";
 // Background image for errors
 // (has to be 464x96px PNG in "resources" folder!):
 $error_bg = "error_bg.png";
+// Lock image for displaying password protection
+// (has to be 20x24px PNG in "resources" folder!):
+$lock_icon = "lock.png";
 // Font to use
 // (has to be TrueType-Font in "resources" folder!):
 $font_ttf = "SpecialElite.ttf";

@@ -139,8 +139,15 @@
 	imagesavealpha($baseimg, true);
 	
 	$map = strtolower($rules['MPN_s']);
-	$mappic = $resdir . "mapimages/" . $map . ".png";
-	if(!file_exists($mappic))
+	if(!$default_bg_only)
+	{
+		$mappic = $resdir . "mapimages/" . $map . ".png";
+		if(!file_exists($mappic))
+		{
+			$mappic = $resdir . $default_bg;
+		}
+	}
+	else
 	{
 		$mappic = $resdir . $default_bg;
 	}
@@ -157,7 +164,7 @@
 	
 	if($data['Password'] == 1)
 	{
-		$locked = $resdir . "lock.png";
+		$locked = $resdir . $lock_icon;
 		BuildImage($baseimg, $locked, 74, 70, 0, 0, 20, 24);
 	}
 	
