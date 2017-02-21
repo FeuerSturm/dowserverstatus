@@ -1,6 +1,5 @@
 # Days of War Live Gameserver Status Banner
-![Example1](https://dowserverstatus.net/dow.91te.de/21015/banner.png)
-![Example2](https://dowserverstatus.net/dow.91te.de/22015/banner.png)
+![Example](https://dowserverstatus.net/31.186.250.10/27015/banner.png)
 
 The DoW Live Gameserver Status Banner highly customizable and yet still works right out of the box if you're fine with the default settings!
 
