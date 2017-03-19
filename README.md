@@ -3,11 +3,11 @@
 
 The DoW Live Gameserver Status Banner highly customizable and yet still works right out of the box if you're fine with the default settings!
 
-###INSTALLATION:
+### INSTALLATION:
 **Download [the latest version](https://github.com/FeuerSturm/serverstatus/releases/latest)**, extract it and upload the contents
 to your webserver.
 
-###USAGE:
+### USAGE:
 By default the script requires the ip address and query port of the DoW gameserver you want to show
 a live status banner for, the format is as follows:
 
@@ -19,7 +19,7 @@ Example:
 
 I think you get the idea!
 
-###CUSTOMIZATION:
+### CUSTOMIZATION:
 If you're not happy with the default settings/look, you can customize the status banner to your likings,
 just edit the "**config.php**" in the "config" folder with a text editor (I'd recommend [NotePad++](https://notepad-plus-plus.org/)) and you'll find all possible options!
 
@@ -39,7 +39,7 @@ Here's some stuff that you can edit:
 I've added a lot of comments to the settings, so I hope it's easy to understand what to change, if not, just ask!
 
 
-###CREDITS:
+### CREDITS:
 
     based on PHP-Source-Query Library by xPaw - https://github.com/xPaw/
     included DoW game logo created by Switz [3rd MAR] - http://3rdmarines.org/
