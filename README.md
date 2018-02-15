@@ -1,5 +1,5 @@
 # Days of War Live Gameserver Status Banner
-![Example](https://feuersturm.info/dow/examples/banner.png)
+![Example](https://feuersturm.github.io/examples/dow_banner.png)
 
 The DoW Live Gameserver Status Banner highly customizable and yet still works right out of the box if you're fine with the default settings!
 
