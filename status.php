@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // Days of War Live Gameserver Status Banner
 //
-// created by FeuerSturm - https://dowserverstatus.net
+// created by FeuerSturm - https://feuersturm.info
 //
 // Credits:
 // - based on PHP-Source-Query Library by xPaw - https://github.com/xPaw/
@@ -38,7 +38,7 @@
 		AddShadowedText($baseimg, $font, $error_fontsize, 110, 60, $errormsg, $error_textcolor_alloc, $error_shadowcolor_alloc, false, 2);
 		imagepng($baseimg, $cachefile, 1);
 		imagedestroy($baseimg);
-		$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
+		$contentdisp = 'Content-Disposition: inline; filename="dow_banner.png"';
 		header('content-type: image/png');
 		header($contentdisp);
 		readfile($cachefile);
@@ -87,7 +87,7 @@
 	}
 	if(file_exists($cachefile) AND (time() - filemtime($cachefile) <= $cache_time))
 	{
-		$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
+		$contentdisp = 'Content-Disposition: inline; filename="dow_banner.png"';
 		header('content-type: image/png');
 		header($contentdisp);
 		readfile($cachefile);
@@ -223,10 +223,11 @@
 	AddShadowedText($baseimg, $font, $font_size , 170, 47, $ipinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
 	AddShadowedText($baseimg, $font, $font_size , 170, 64, $mapinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
 	AddShadowedText($baseimg, $font, $font_size , 170, 81, $playerinfo, $data_textcolor_alloc, $data_shadowcolor_alloc);
+	AddShadowedText($baseimg, $font, 8, 456, 95, "Days of War", $data_textcolor_alloc, $data_shadowcolor_alloc, true);
 	
 	imagepng($baseimg, $cachefile, 1);
 	imagedestroy($baseimg);
-	$contentdisp = 'Content-Disposition: inline; filename="banner.png"';
+	$contentdisp = 'Content-Disposition: inline; filename="dow_banner.png"';
 	header('content-type: image/png');
 	header($contentdisp);
 	readfile($cachefile);
